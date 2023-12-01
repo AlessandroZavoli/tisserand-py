@@ -1,8 +1,8 @@
 # Fdb version 3
-["pdflatex"] 1701445572 "/home/spectral000az/Documenti/tisserand-py/doc/tissdoc.tex" "/home/spectral000az/Documenti/tisserand-py/doc/tissdoc.pdf" "tissdoc" 1701445573
+["pdflatex"] 1701450390 "/home/spectral000az/Documenti/tisserand-py/doc/tissdoc.tex" "/home/spectral000az/Documenti/tisserand-py/doc/tissdoc.pdf" "tissdoc" 1701450391
   "/etc/texmf/web2c/texmf.cnf" 1595245381 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/spectral000az/Documenti/tisserand-py/doc/tissdoc.aux" 1701445573 647 864f45729364ee3abfb5f1bc01579613 ""
-  "/home/spectral000az/Documenti/tisserand-py/doc/tissdoc.tex" 1701445571 5586 e2904a2b53b3133907e85c5ff9d931b1 ""
+  "/home/spectral000az/Documenti/tisserand-py/doc/tissdoc.aux" 1701450391 647 864f45729364ee3abfb5f1bc01579613 ""
+  "/home/spectral000az/Documenti/tisserand-py/doc/tissdoc.tex" 1701450389 5731 c8b5aea4e390f614033e90ad89e434b6 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ectt1000.tfm" 1136768653 1536 06717a2b50de47d4087ac0e6cd759455 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
@@ -90,11 +90,11 @@
   "Figures/tisserand_jovian.png" 1701377932 391850 a41a51619a6012b9f0399c6ac3dea826 ""
   "Figures/tisserand_jovian_resonance.png" 1701381760 373948 d361381950ca60db60cf18f64d25583d ""
   "Figures/tisserand_solar.png" 1701372197 240140 a24285bff114533142e9a77c2dfbc48e ""
-  "tissdoc.aux" 1701445573 647 864f45729364ee3abfb5f1bc01579613 "pdflatex"
-  "tissdoc.tex" 1701445571 5586 e2904a2b53b3133907e85c5ff9d931b1 ""
+  "tissdoc.aux" 1701450391 647 864f45729364ee3abfb5f1bc01579613 "pdflatex"
+  "tissdoc.tex" 1701450389 5731 c8b5aea4e390f614033e90ad89e434b6 ""
   (generated)
-  "tissdoc.log"
-  "tissdoc.aux"
-  "/home/spectral000az/Documenti/tisserand-py/doc/tissdoc.pdf"
   "tissdoc.pdf"
+  "tissdoc.log"
+  "/home/spectral000az/Documenti/tisserand-py/doc/tissdoc.pdf"
   "/home/spectral000az/Documenti/tisserand-py/doc/tissdoc.log"
+  "tissdoc.aux"
