@@ -68,8 +68,38 @@ def deflection_angle(vinf, R_s, mu_s, rp_min):
 
 
 class tisserand_plot:
-    def __init__(self, mu_p_dim, rconv_dim=1):
+    """
+    A class representing a Tisserand plot.
 
+    Attributes:
+    - mu_p_dim: Gravitational parameter of the primary body [adim]
+    - rconv_dim: Conversion factor for distance [adim]
+    - rconv: Orbital radius of the primary body [adim]
+    - vconv: Orbital velocity of the primary body [adim]
+    - tconv: Orbital period of the primary body [adim]
+    - mu_p_dim: Gravitational parameter of the primary body [adim]
+    - secondarys: List of secondary bodies added to the Tisserand plot
+    - fig: Figure object for the plot
+    - ax: Axes object for the plot
+
+    Methods:
+    - __init__(self, mu_p_dim, rconv_dim=1): Initializes the Tisserand plot with the given parameters
+    - add_secondary(self, mu_s_dim, a_s_dim, rp_min_dim, name, color='black'): Adds a secondary body to the Tisserand plot
+    - show_body_names(self): Displays the names of the secondary bodies on the plot
+    - add_alfa_contour(self, alfa, body_id): Adds an alpha contour to the Tisserand plot
+    - add_periodo_contour(self, list_resonance, body_id, opz=''): Adds a period contour to the Tisserand plot
+    - add_box(self, R_P_min, R_P_max, R_A_min, R_A_max): Adds a box to the Tisserand plot
+    - add_vinf_contour(self, vinf, body_id): Adds a vinf contour to the Tisserand plot
+    - save_to_file(self, filename): Saves the Tisserand plot to a file
+    """
+    def __init__(self, mu_p_dim, rconv_dim=1):
+        """
+        Initializes the Tisserand plot with the given parameters.
+
+        Parameters:
+        - mu_p_dim: Gravitational parameter of the primary body [adim]
+        - rconv_dim: Conversion factor for distance [adim]
+        """
         self.rconv = rconv_dim
         self.vconv = sqrt(mu_p_dim/rconv_dim)
         self.tconv = self.rconv/self.vconv
@@ -81,17 +111,17 @@ class tisserand_plot:
         self.ax = self.fig.add_subplot(111)
         self.ax.set_xlabel('$R_A$ [adim]')
         self.ax.set_ylabel('$R_P$ [adim]')
-        
 
-   
     def add_secondary(self, mu_s_dim, a_s_dim, rp_min_dim, name, color='black'):
         """
         Add a secondary to the Tisserand plot.
-        a secondary body is saved as dictionary with the following keys:
-        - name: name of the secondary
-        - mu_s: gravitational parameter of the secondary [adim]
-        - a_s: orbital radius of the secondary [adim]
-        - rp_min: minimum equatorial radius of the hyperbola [adim]
+
+        Parameters:
+        - mu_s_dim: Gravitational parameter of the secondary [adim]
+        - a_s_dim: Orbital radius of the secondary [adim]
+        - rp_min_dim: Minimum equatorial radius of the hyperbola [adim]
+        - name: Name of the secondary
+        - color: Color of the secondary (default: 'black')
         """
         self.secondarys.append(
             {
@@ -100,19 +130,35 @@ class tisserand_plot:
                 'mu_s': mu_s_dim/self.mu_p_dim,
                 'a_s': a_s_dim/self.rconv,
                 'rp_min': rp_min_dim/self.rconv})
-           
-    def show_body_names(self):        
+
+    def show_body_names(self):
+        """
+        Displays the names of the secondary bodies on the plot.
+        """
         for body in self.secondarys:
             self.ax.text(body['a_s']-0.01, body['a_s']+0.01, body['name'], 
                          horizontalalignment='right',
                          color=body['color'], fontsize=12)
-        
- 
+
     def add_alfa_contour(self, alfa, body_id):
+        """
+        Adds an alpha contour to the Tisserand plot.
+
+        Parameters:
+        - alfa: Alpha values for the contour
+        - body_id: Index of the secondary body to add the contour for
+        """
         pass
 
     def add_periodo_contour(self, list_resonance, body_id, opz=''):
-    
+        """
+        Adds a period contour to the Tisserand plot.
+
+        Parameters:
+        - list_resonance: List of resonance values (n, m, color)
+        - body_id: Index of the secondary body to add the contour for
+        - opz: Options for the contour (default: '')
+        """
         a_s = self.secondarys[body_id]['a_s']
         mu_s = self.secondarys[body_id]['mu_s']
         rp_min = self.secondarys[body_id]['rp_min']
@@ -125,20 +171,15 @@ class tisserand_plot:
 
             R_P_res = np.linspace(a_s*.999, a_s*0.01, 1000)
             R_A_res = 2*a_sc - R_P_res
-    
-            # # R_P_res = np.where(R_A_res >=a_s and R_P_res>=a_s, R_P_res, np.nan)
-            # R_P_res.all((R_A_res >=a_s & R_P_res>=a_s).any())
-            # R_A_res.all((R_A_res >=a_s) and (R_P_res>=a_s))
+
             mask = (R_A_res >=a_s) & (R_P_res<=a_s)
             R_P_res, R_A_res = R_P_res[mask], R_A_res[mask]
 
             self.ax.plot(R_A_res, R_P_res, '--', label=str(n) + ':' + str(m), color=color)
 
             self.ax.text(R_A_res[0], R_P_res[0]+0.1, str(n) + ':' + str(m), 
-                        #  horizontalalignment='left',
                          color=color, fontsize=12)
 
-            # per ogni coppia R_A, R_P lungo una risonanza, calcola anche l'angolo alfa corrispondente alla deflessione massima           
             vinf, alfa = inverse_transform(R_A_res, R_P_res, a_s)
             delta_max = deflection_angle(vinf, a_s, mu_s, rp_min)
 
@@ -149,31 +190,36 @@ class tisserand_plot:
                 self.ax.plot(R_A_left, R_P_left, '-',color=color)
 
             if 'r' in opz:
-                # alfa_right = np.max(np.zeros_like(alfa), alfa - delta_max)
                 alfa_right = alfa - delta_max
                 alfa_right = np.where(alfa_right>=0, alfa_right, 0)
                 R_A_right, R_P_right = direct_transform(vinf, alfa_right, a_s)
                 self.ax.plot(R_A_right, R_P_right, '-',color=color)
 
-
-
-
     def add_box(self, R_P_min, R_P_max, R_A_min, R_A_max):
         """
-        Add a box to the Tisserand plot.
+        Adds a box to the Tisserand plot.
+
+        Parameters:
+        - R_P_min: Minimum value for R_P
+        - R_P_max: Maximum value for R_P
+        - R_A_min: Minimum value for R_A
+        - R_A_max: Maximum value for R_A
         """
         self.ax.set_xlim(R_A_min, R_A_max)
         self.ax.set_ylim(R_P_min, R_P_max)
         
         for body in self.secondarys:
-        # body = self.secondarys[0]
-        # print("body['a_s'] = ", body['a_s'])
             self.ax.vlines(x=body['a_s'], ymin=0., ymax=body['a_s'], color='black', linestyle='--')
             self.ax.hlines(body['a_s'], xmin=body['a_s'], xmax=100., color='black', linestyle='--')
 
-    
-    def add_vinf_contour(self, vinf, body_id):   
+    def add_vinf_contour(self, vinf, body_id):
+        """
+        Adds a vinf contour to the Tisserand plot.
 
+        Parameters:
+        - vinf: List of vinf values
+        - body_id: Index of the secondary body to add the contour for
+        """
         if body_id > len(self.secondarys):
             raise ValueError('The body_id is not in the list of secondarys')
 
@@ -189,8 +235,12 @@ class tisserand_plot:
             R_A, R_P = direct_transform(vinf_i, alfa, a_s)
 
             self.ax.plot(R_A, R_P, label='vinf = ' + str(vinf_i), color=color, alpha=0.5)
-                         
-            
 
     def save_to_file(self, filename):
+        """
+        Saves the Tisserand plot to a file.
+
+        Parameters:
+        - filename: Name of the file to save the plot to
+        """
         self.fig.savefig(filename)
